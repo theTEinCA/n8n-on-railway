@@ -1,0 +1,12 @@
+{
+    # This allows Railway to automatically manage HTTPS for us.
+    acme_dns cloudflare <your-cloudflare-api-token>
+}
+
+n8n.neudbms.com {
+    # Log errors to the console so we can see them in Railway
+    log
+
+    # Send all traffic to the n8n service on its default port
+    reverse_proxy n8n:5678
+}
