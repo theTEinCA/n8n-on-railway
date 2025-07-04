@@ -1,10 +1,5 @@
-# Temporary Caddyfile for debugging
-{
-    # Tell Railway to listen on the port it provides
-    http_port {$PORT}
-}
+# Use the official Caddy image that already includes the Cloudflare DNS plugin
+FROM caddy:2-dns-cloudflare
 
-# Simple test server
-:{$PORT} {
-    respond "Caddy is running!"
-}
+# Copy our Caddyfile like before
+COPY Caddyfile /etc/caddy/Caddyfile
