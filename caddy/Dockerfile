@@ -1,6 +1,9 @@
 # STAGE 1: Build a custom Caddy with the Cloudflare plugin
 FROM caddy:2-builder AS builder
 
+# THIS IS THE NEW LINE: It fixes the git authentication error.
+RUN git config --global url."https://github.com/".insteadOf "git@github.com:"
+
 RUN xcaddy build \
     --with github.com/caddyserver/dns.providers.cloudflare
 
