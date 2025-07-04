@@ -1,10 +1,14 @@
-# Temporary Caddyfile for debugging
-{
-    # Tell Railway to listen on the port it provides
-    http_port {$PORT}
-}
+# STAGE 1: Build a custom Caddy with the Cloudflare plugin
+FROM caddy:2-builder AS builder
 
-# Simple test server
-:{$PORT} {
-    respond "Caddy is running!"
-}
+RUN xcaddy build \
+    --with github.com/caddyserver/dns.providers.cloudflare
+
+# STAGE 2: Create the final, small production image
+FROM caddy:2-alpine
+
+# Copy the custom-built Caddy binary from the builder stage
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+
+# Copy our Caddyfile
+COPY Caddyfile /etc/caddy/Caddyfile
